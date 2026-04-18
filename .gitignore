@@ -1,0 +1,22 @@
+# エディタ・IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# 作品集（ユーザー持込、リポジトリに含めない）
+sources/**
+
+# 大型生データ
+references/research/stats.json.bak
