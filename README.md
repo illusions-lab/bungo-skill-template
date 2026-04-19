@@ -1,12 +1,205 @@
-# [作家名]-skill （テンプレートから生成）
+<div align="center">
 
-> *[作家名]を、1 つのプロンプトへと蒸留します。*
+![og](/repository-open-graph.png)
 
-このリポジトリは [`illusions-lab/bungo-skill-template`](https://github.com/illusions-lab/bungo-skill-template) から生成されました。親工房 [`illusions-lab/bungo-skill`](https://github.com/illusions-lab/bungo-skill)（文豪.skill）のスクリプトと方法論に従って、[作家名] の文体 DNA を蒸留します。
+
+# [作家名].skill
+
+*[作家名]の文章DNAを、[XX]KB のプロンプトへと蒸留しました。*
+
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](./LICENSE)
+[![Corpus](https://img.shields.io/badge/corpus-[XX]篇%20%7C%20[XX]万字-lightgrey)](#)
+[![Based on 文豪.skill](https://img.shields.io/badge/based%20on-文豪.skill-6f42c1)](https://github.com/illusions-lab/bungo-skill)
+[![Claude Code](https://img.shields.io/badge/Claude%20Code-compatible-F97316)](#)
+
+**書く　／　添削　／　対話**
+
+</div>
 
 ---
 
-## 使い方（このテンプレートを複製する側の手引書）
+このリポジトリは [`illusions-lab/bungo-skill`](https://github.com/illusions-lab/bungo-skill)（文豪.skill）によって蒸留された **[作家名]の憑依 skill** です。作品集 [XX] 篇（[底本情報]、約 [XX] 万字）と Wikipedia（ja/en、[取得日] 取得）から、14 層 × 5 カテゴリ（聲・眼・骨・魂・界）の文体 DNA を抽出しました。
+
+ロードした AI は「[作家名]について解説する」のではなく、**[作家名]として語り始めます**。模倣ではなく憑依。書く／添削／対話の 3 モードに対応します。
+
+## [作家名]について
+
+| 項目 | 内容 |
+|---|---|
+| **本名** | [本名] |
+| **生没** | [生年月日]（[出身地]）— [没年月日]（[没地]、享年 [XX]） |
+| **代表作** | [代表作リスト] |
+| **位置づけ** | [文学史上の位置づけ] |
+
+**略歴**：[作家の略歴を記述]
+
+**作風の核**：[作風の核心的な特徴を記述]
+
+## インストール
+
+> [!NOTE]
+> Claude Code もしくは [skills CLI](https://github.com/anthropics/claude-skills) が動く環境が必要です。
+
+**方法 1：skills CLI で追加**
+
+```bash
+npx skills add illusions-lab/[作家名]-skill
+```
+
+**方法 2：Claude Code の skills ディレクトリに置く**
+
+```bash
+git clone https://github.com/illusions-lab/[作家名]-skill ~/.claude/skills/[作家名]-skill
+```
+
+インストール後、Claude Code から `[作家名].skill をロードして` 等のトリガーで起動します。
+
+## 3 つの起動モード
+
+### ✍️ 1. 書くモード
+
+[作家名]の語彙・構文・物語構造で新しい文章を生成します。
+
+**トリガー例**
+- 「[作家名]風にエッセイを書いて」
+- 「[テーマ]について、[作家名]の筆で」
+- 「[シチュエーション]を[作家名]が書くなら？」
+
+<details>
+<summary><b>出力サンプル</b>（主題：[サンプル主題]）</summary>
+
+<br>
+
+> [出力サンプルをここに記述]
+
+</details>
+
+### 📝 2. 添削モード
+
+原稿を[作家名]の美学で赤入れします。
+
+**トリガー例**
+- 「この冒頭、[作家名]に添削してもらいたい」
+- 「[作家名]ならこの一段落どう直す？」
+
+<details>
+<summary><b>出力サンプル</b>（原文：「[サンプル原文]」）</summary>
+
+<br>
+
+**[赤入れ]**
+
+> [赤入れサンプルをここに記述]
+
+**[指摘]**
+
+[指摘内容をここに記述]
+
+</details>
+
+### 💬 3. 対話モード
+
+キャリア・恋愛・生きづらさ等の相談に、[作家名]の世界観で応じます。**解決策ではなく共感の深さで応じる**のが特徴です。
+
+**トリガー例**
+- 「[作家名]さんに相談したい。[悩み]」
+- 「[作家名]、[問い]」
+
+<details>
+<summary><b>出力サンプル</b>（相談：「[サンプル相談]」）</summary>
+
+<br>
+
+> [対話サンプルをここに記述]
+
+</details>
+
+## 著作権について
+
+本プロジェクトは、作家の作品を読解・参照・分析したうえで生成された AI プロンプトである。そこに作家の原文が含まれる場合もあるが、それはあくまで引用の域を出ない——現在の文学研究となんら変わるところはない。
+
+いわゆる「AI の生成内容には他者の著作物が含まれうる」という主張は、AI の動作原理からすれば荒唐無稽と言うほかない。AI はコーパス内の内容を複製しているのではなく、そこからアイデアを学習し、自ら文章を生成しているのである。
+
+日本著作権法第 2 条第 1 項第 1 号の「著作物」の定義、および最高裁平成 13 年 6 月 28 日判決（江差追分事件）によって確立された「アイデア・表現二分論」に照らせば、アイデアそのものは著作権の保護対象には含まれない。
+
+> [!IMPORTANT]
+> AI の原理を理解しないまま批判を繰り広げる一部の人々には、まずは勉強してから発言してほしい。無知を唯一の論拠にすべきではない。
+
+## この skill の限界
+
+> [!WARNING]
+> 以下を理解したうえでご利用ください。
+
+- **時代語感の完全再現は不可能**：[作家名]が生きた時代の空気感は写せません
+- **平均的[作家名]にとどまる**：傑作のピークの冴えは再現困難
+- **未発表原稿ではない**：生成物は「[作家名]風の模倣」であり、[作家名]本人の著作ではありません
+- **精神医学的診断は不可**：L12 の Big Five 等は作品理解の補助であり、臨床的診断ではありません
+- **調査日以降の新資料は未反映**：[取得日] 時点の情報に基づきます
+
+> 限界の完全なリストは [`references/research/05-boundary.md`](./references/research/05-boundary.md) §L14 にあります。
+
+## リポジトリ構造
+
+```
+[作家名]-skill/
+├── SKILL.md                    憑依本体（14 層 × 5 カテゴリ）
+├── README.md                   この文書
+├── LICENSE                     MIT
+├── .gitignore                  sources/ を除外
+└── references/
+    ├── research/
+    │   ├── 01-voice.md         聲（L1–L3）語彙・構文・音韻
+    │   ├── 02-eye.md           眼（L4–L6）視点・五感・読者距離
+    │   ├── 03-bones.md         骨（L7–L9）段落・対話・物語構造
+    │   ├── 04-soul.md          魂（L10–L12）主題・レトリック・人格
+    │   ├── 05-boundary.md      界（L13–L14）反パターン・限界
+    │   └── stats.json          stylometry.py の生出力
+    └── wikipedia/
+        ├── ja.md               日本語版（[取得日] 取得）
+        └── en.md               英語版（[取得日] 取得）
+```
+
+## 倫理・法的
+
+- **作品集**：[底本情報と著作権状況を記述]
+- **生成物の位置づけ**：文学・教育・エンタメ用途。学術的な[作家名]資料としての真正性は持たない
+- **L12 人格推定**：公開伝記情報からの推定であり、臨床的診断ではない
+
+> [!CAUTION]
+> **臨床支援ではありません。** この skill は文学的な声の再現であり、臨床心理支援・医療の代替にはなりません。死・苦しみの主題の対話は文学の中核として skill 側で中断せず扱いますが、実際の心理支援が必要な場合はユーザー自身で専門機関へご連絡ください。
+
+## 親工房との関係
+
+| リポジトリ | 役割 |
+|---|---|
+| [illusions-lab/bungo-skill](https://github.com/illusions-lab/bungo-skill)（文豪.skill） | 作家を蒸留する方法論と道具。本リポは工房で蒸留された成果物 |
+| [illusions-lab/bungo-skill-template](https://github.com/illusions-lab/bungo-skill-template) | 新規作家リポの雛形。本リポはこの雛形から派生 |
+| [alchaincyf/nuwa-skill](https://github.com/alchaincyf/nuwa-skill)（女娲.skill） | 思考方式を蒸留する姉妹工房 |
+
+## ライセンス
+
+[MIT License](./LICENSE)。
+
+[作家名]の作品は公有領域にありますが、本 skill の **プロンプト構成・研究ノート・解析結果** は MIT ライセンスで提供されます。
+
+---
+
+<div align="center">
+
+> *「[作家名]の代表的な一節をここに]」*
+>
+> —— [作家名]『[作品名]』
+
+この skill は、[作家名]への敬意を込めて、[文豪.skill](https://github.com/illusions-lab/bungo-skill) によって蒸留されました。
+
+</div>
+
+---
+
+<details>
+<summary><b>このテンプレートの使い方（新規作家リポジトリを作る手引き）</b></summary>
+
+<br>
 
 ### 1. テンプレートから新しい作家リポジトリを作る
 
@@ -14,11 +207,11 @@ GitHub の **"Use this template"** ボタン、あるいはローカルで：
 
 ```bash
 # GitHub CLI を使う場合
-gh repo create illusions-lab/太宰治-skill --template illusions-lab/bungo-skill-template --private
+gh repo create illusions-lab/[作家名]-skill --template illusions-lab/bungo-skill-template --private
 
 # ローカル clone から初期化する場合
-git clone https://github.com/illusions-lab/bungo-skill-template ~/Repositories/太宰治-skill
-cd ~/Repositories/太宰治-skill
+git clone https://github.com/illusions-lab/bungo-skill-template ~/Repositories/[作家名]-skill
+cd ~/Repositories/[作家名]-skill
 rm -rf .git
 git init
 git add . && git commit -m "init: spawn from bungo-skill-template"
@@ -29,10 +222,7 @@ git add . && git commit -m "init: spawn from bungo-skill-template"
 作品集を解析するスクリプトは親工房に住んでいる。子リポにはコピーしない。
 
 ```bash
-# まだ無ければ clone
 git clone https://github.com/illusions-lab/bungo-skill ~/bungo-skill
-
-# Python 依存（venv 推奨）
 cd ~/bungo-skill
 python3 -m venv .venv
 .venv/bin/pip install 'fugashi[unidic-lite]' pdfplumber ebooklib beautifulsoup4
@@ -41,9 +231,9 @@ python3 -m venv .venv
 ### 3. 作品集を `sources/works/` に配置する
 
 ```bash
-# 青空文庫の場合（太宰治 = 人物番号 000035）
+# 青空文庫の場合（例：太宰治 = 人物番号 000035）
 git clone --depth 1 https://github.com/aozorabunko/aozorabunko /tmp/aozora-tmp
-cp /tmp/aozora-tmp/cards/000035/files/*.txt sources/works/
+cp /tmp/aozora-tmp/cards/[人物番号]/files/*.txt sources/works/
 rm -rf /tmp/aozora-tmp
 ```
 
@@ -52,10 +242,8 @@ rm -rf /tmp/aozora-tmp
 ### 4. 統計を計算する
 
 ```bash
-# PDF/epub/html を正規化（青空文庫 txt はそのままでも通る）
 ~/bungo-skill/.venv/bin/python ~/bungo-skill/scripts/normalize_text.py sources/works/
 
-# L1-L3 統計を JSON で出す
 ~/bungo-skill/.venv/bin/python ~/bungo-skill/scripts/stylometry.py sources/works/ \
   --out references/research/stats.json
 ```
@@ -79,59 +267,10 @@ rm -rf /tmp/aozora-tmp
 ### 7. 公開
 
 ```bash
-# GitHub 側で repo を作成したあと
 git remote add origin git@github.com:illusions-lab/[作家名]-skill.git
 git push -u origin main
 ```
 
-インストール側は：
+公開後、このテンプレート手引きブロック（`<details>` ごと）を README から削除し、`[作家名]` プレースホルダーをすべて実際の作家情報に置き換える。
 
-```bash
-npx skills add illusions-lab/[作家名]-skill
-```
-
----
-
-## リポジトリ構造
-
-```
-[作家名]-skill/
-├── SKILL.md                    憑依本体（14 層 × 5 カテゴリ）
-├── README.md                   この文書
-├── LICENSE                     MIT
-├── .gitignore                  sources/ を除外
-├── references/
-│   ├── research/
-│   │   ├── 01-voice.md         聲（L1-L3）
-│   │   ├── 02-eye.md           眼（L4-L6）
-│   │   ├── 03-bones.md         骨（L7-L9）
-│   │   ├── 04-soul.md          魂（L10-L12）
-│   │   ├── 05-boundary.md      界（L13-L14）
-│   │   └── stats.json          stylometry.py の生出力
-│   └── wikipedia/
-│       ├── ja.md
-│       └── en.md
-└── sources/                    GIT 除外、ユーザー持込
-    └── works/
-```
-
----
-
-## 倫理・法的
-
-- **作品集は公有領域または正規ライセンス下のもののみ**。青空文庫は日本の著作権法で保護期間が満了した作品を公開している。
-- **生存作家は原則として対象外**。例外として本人許諾を得た場合のみ。
-- 生成文は [作家名] 本人の作ではない。蒸留プロンプトによる再構成である旨、skill 起動時に明示される。
-- L12 人格推定は**公開情報からの推定**であり、臨床的診断ではない。
-
----
-
-## 親工房との関係
-
-- **[illusions-lab/bungo-skill](https://github.com/illusions-lab/bungo-skill)**（文豪.skill）：作家を蒸留する方法論と道具。本リポは工房で蒸留された成果物。
-- **[illusions-lab/bungo-skill-template](https://github.com/illusions-lab/bungo-skill-template)**：新規作家リポの雛形。本リポはこの雛形から派生。
-- **[alchaincyf/nuwa-skill](https://github.com/alchaincyf/nuwa-skill)**（女娲.skill）：思考方式を蒸留する姉妹工房。
-
----
-
-> *この雛形は [文豪.skill](https://github.com/illusions-lab/bungo-skill) が蒸留の再現性を保つために用意したものです。*
+</details>
