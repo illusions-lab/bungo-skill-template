@@ -7,6 +7,11 @@
 
 *[作家名]の文章DNAを、[XX]KB のプロンプトへと蒸留しました。*
 
+＊
+
+*[ここでは該当作家っぽい「[作家名]の文章DNAを、[XX]KB のプロンプトへと蒸留しました。」と置き換えください]*
+
+
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](./LICENSE)
 [![Corpus](https://img.shields.io/badge/corpus-[XX]篇%20%7C%20[XX]万字-lightgrey)](#)
 [![Based on 文豪.skill](https://img.shields.io/badge/based%20on-文豪.skill-6f42c1)](https://github.com/illusions-lab/bungo-skill)
