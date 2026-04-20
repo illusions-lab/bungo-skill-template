@@ -1,0 +1,109 @@
+name: Deploy Web to Pages
+
+# 各 skill repo は web/ source を持たない。
+# このワークフローが illusions-lab/bungo-skill-template から web/ を fetch して
+# build → docs/ → GitHub Pages に配信する。
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'illusions-skill.yaml'
+      - 'README.md'
+  workflow_run:
+    workflows: ['Generate Assets']
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      web_source:
+        description: 'web source repo (owner/name@ref)。未指定時は repo Variable WEB_SOURCE を使用'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  # 各 skill repo の Settings → Variables で WEB_SOURCE を設定する
+  # 例: WEB_SOURCE=illusions-lab/skill-web@main
+  WEB_SOURCE: ${{ github.event.inputs.web_source || vars.WEB_SOURCE || '' }}
+
+jobs:
+  build:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+
+      - name: Verify web source configured
+        run: |
+          if [ -z "$WEB_SOURCE" ]; then
+            echo "::warning::WEB_SOURCE not configured. Set repo Variable WEB_SOURCE=owner/repo@ref to enable Pages deploy."
+            echo "skip=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+        id: check
+
+      - name: Fetch web source
+        if: steps.check.outputs.skip != 'true'
+        run: |
+          REPO="${WEB_SOURCE%@*}"
+          REF="${WEB_SOURCE##*@}"
+          echo "Cloning $REPO @ $REF for web source"
+          git clone --depth 1 --branch "$REF" "https://github.com/${REPO}.git" /tmp/web-source
+          if [ ! -d /tmp/web-source/web ]; then
+            echo "::error::web/ directory not found in $REPO@$REF"
+            exit 1
+          fi
+          cp -r /tmp/web-source/web ./web
+
+      - uses: actions/setup-node@v4
+        if: steps.check.outputs.skip != 'true'
+        with:
+          node-version-file: 'web/.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: 'web/package-lock.json'
+
+      - name: Install web dependencies
+        if: steps.check.outputs.skip != 'true'
+        working-directory: web
+        run: npm ci || npm install
+
+      - name: Build static site
+        if: steps.check.outputs.skip != 'true'
+        working-directory: web
+        run: npm run build
+
+      - name: Copy OG image to docs
+        if: steps.check.outputs.skip != 'true'
+        run: |
+          if [ -f repository-open-graph.png ]; then
+            cp repository-open-graph.png docs/repository-open-graph.png
+          else
+            echo "::warning::repository-open-graph.png not found; OG meta image will be missing"
+          fi
+
+      - uses: actions/upload-pages-artifact@v3
+        if: steps.check.outputs.skip != 'true'
+        with:
+          path: docs
+
+  deploy:
+    needs: build
+    if: ${{ vars.WEB_SOURCE != '' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

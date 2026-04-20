@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- A2 (4961×7016) / B2 (5906×8350) -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="{{width}}" height="{{height}}" viewBox="0 0 {{width}} {{height}}">
+  <defs>
+    <filter id="noise" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" />
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 {{design.noise_opacity}} 0" />
+      <feComposite in2="SourceGraphic" operator="in" />
+    </filter>
+    <linearGradient id="portraitFade" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="55%" stop-color="{{design.background}}" stop-opacity="0" />
+      <stop offset="100%" stop-color="{{design.background}}" stop-opacity="1" />
+    </linearGradient>
+    <filter id="glow" x="-80%" y="-80%" width="360%" height="360%">
+      <feGaussianBlur stdDeviation="16" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <clipPath id="portraitClip">
+      <rect x="0" y="0" width="{{width}}" height="3200" />
+    </clipPath>
+  </defs>
+
+  <g id="layer-background">
+    <rect width="{{width}}" height="{{height}}" fill="{{design.background}}" />
+    <rect width="{{width}}" height="{{height}}" filter="url(#noise)" opacity="0.6" />
+  </g>
+
+  {{!-- portrait: 印刷用は一旦コメントアウト
+  {{#if portraitDataURI}}
+  <g id="layer-portrait">
+    <image href="{{portraitDataURI}}"
+           x="0" y="0" width="{{width}}" height="3200"
+           preserveAspectRatio="xMidYMid slice"
+           clip-path="url(#portraitClip)" />
+    <rect x="0" y="0" width="{{width}}" height="3200" fill="url(#portraitFade)" />
+  </g>
+  {{/if}}
+  --}}
+
+  <g id="layer-title">
+    <text class="outline" x="{{div width 2}}" y="3700"
+          font-family="{{design.font_title}}" font-size="580"
+          fill="#f5f5f5" text-anchor="middle">{{tier_1.name_ja}}</text>
+  </g>
+
+  <g id="layer-skill-label">
+    <text x="{{sub width 360}}" y="4100"
+          font-family="{{design.font_mono}}" font-size="340"
+          fill="#fc01ff" text-anchor="end">.skill</text>
+  </g>
+
+  <g id="layer-tagline">
+    {{#each taglineLines}}
+    <text x="{{div ../width 2}}" y="{{add 4480 (mul @index 200)}}"
+          font-family="{{../design.font_body}}" font-size="130"
+          fill="#cccccc" text-anchor="middle">{{this}}</text>
+    {{/each}}
+  </g>
+
+  {{#if tier_3.modes}}
+  <g id="layer-modes">
+    {{#each tier_3.modes}}
+    <g transform="translate({{add 380 (mul @index 1500)}}, 4960)">
+      <rect width="1380" height="680" rx="40"
+            fill="#1a1a1a" stroke="#333333" stroke-width="6" />
+      <text class="outline" x="690" y="420"
+            font-family="{{../design.font_title}}" font-size="200"
+            fill="#f5f5f5" text-anchor="middle">{{name}}</text>
+      <text x="690" y="580"
+            font-family="{{../design.font_body}}" font-size="86"
+            fill="#888888" text-anchor="middle">{{desc}}</text>
+    </g>
+    {{/each}}
+  </g>
+  {{/if}}
+
+  {{#if tier_4.layer_summary}}
+  <g id="layer-summary">
+    {{#each tier_4.layer_summary}}
+    <g transform="translate({{add 380 (mul @index 900)}}, 5840)">
+      <rect width="820" height="400" rx="24"
+            fill="#111111" stroke="#2a2a2a" stroke-width="4" />
+      <text class="outline" x="410" y="260"
+            font-family="{{../design.font_title}}" font-size="200"
+            fill="#f5f5f5" text-anchor="middle">{{label}}</text>
+      <text x="410" y="355"
+            font-family="{{../design.font_body}}" font-size="66"
+            fill="#666666" text-anchor="middle">{{name}}</text>
+    </g>
+    {{/each}}
+  </g>
+  {{/if}}
+
+  {{#if tier_2.install_command}}
+  <g id="layer-install">
+    <rect x="380" y="6440" width="{{sub width 760}}" height="260" rx="28"
+          fill="#111111" stroke="#2a2a2a" stroke-width="4" />
+    <text x="500" y="6600"
+          font-family="{{design.font_mono}}" font-size="110"
+          fill="#e5e5e5">$ {{tier_2.install_command}}</text>
+  </g>
+  {{/if}}
+
+  <g id="layer-key-kanji">
+    <image href="assets/illusions-kanji.svg"
+           x="{{sub width 660}}" y="{{sub height 660}}" width="420" height="420"
+           filter="url(#glow)" />
+  </g>
+
+  <g id="layer-footer">
+    <text x="{{sub width 380}}" y="{{sub height 180}}"
+          font-family="{{design.font_mono}}" font-size="66"
+          fill="#444444" text-anchor="end">{{repo}}</text>
+  </g>
+
+</svg>

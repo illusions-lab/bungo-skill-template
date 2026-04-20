@@ -1,0 +1,49 @@
+name: Validate Skill
+
+on:
+  pull_request:
+    paths:
+      - 'illusions-skill.yaml'
+      - 'sources/**'
+      - 'fonts/**'
+      - 'generate/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: 'generate/.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: 'generate/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: generate
+        run: npm ci || npm install
+
+      - name: Validate YAML schema + font references
+        working-directory: generate
+        run: node bin/skill-generator.js validate ../illusions-skill.yaml
+
+      - name: Smoke test (OG generation)
+        working-directory: generate
+        run: node bin/skill-generator.js generate --only=og ../illusions-skill.yaml
+
+      - name: Verify OG output exists
+        run: test -f repository-open-graph.png
+
+      - name: Sanity check OG file size
+        run: |
+          SIZE=$(stat -c%s repository-open-graph.png 2>/dev/null || stat -f%z repository-open-graph.png)
+          echo "OG size: $SIZE bytes"
+          if [ "$SIZE" -lt 1000 ]; then
+            echo "::error::OG image suspiciously small (<1KB)"
+            exit 1
+          fi

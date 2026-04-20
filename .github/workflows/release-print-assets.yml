@@ -1,0 +1,65 @@
+name: Release Print Assets
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: 'generate/.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: 'generate/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: generate
+        run: npm ci || npm install
+
+      - name: Validate YAML
+        working-directory: generate
+        run: node bin/skill-generator.js validate ../illusions-skill.yaml
+
+      - name: Generate print assets (high memory)
+        working-directory: generate
+        run: NODE_OPTIONS='--max-old-space-size=6144' node bin/skill-generator.js generate --only=print ../illusions-skill.yaml
+
+      - name: Bundle per-size zips
+        run: |
+          cd dist
+          for size in a4 a3 b2 a2 a1 b1; do
+            # サイズ毎の全形式 (png, pdf, ...) をまとめて zip
+            if ls "${size}".* >/dev/null 2>&1; then
+              zip "../${size}.zip" "${size}".*
+            fi
+          done
+
+      - name: Upload to release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            a4.zip
+            a3.zip
+            b2.zip
+            a2.zip
+            a1.zip
+            b1.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload as workflow artifact (manual run)
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: print-assets
+          path: '*.zip'
+          retention-days: 7

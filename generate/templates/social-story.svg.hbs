@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="{{width}}" height="{{height}}" viewBox="0 0 {{width}} {{height}}">
+  <defs>
+    <filter id="noise" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" />
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 {{design.noise_opacity}} 0" />
+      <feComposite in2="SourceGraphic" operator="in" />
+    </filter>
+    <!-- Portrait bottom-edge fade: top=visible, bottom=background -->
+    <linearGradient id="portraitFade" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="55%" stop-color="{{design.background}}" stop-opacity="0" />
+      <stop offset="100%" stop-color="{{design.background}}" stop-opacity="1" />
+    </linearGradient>
+    <filter id="glow" x="-80%" y="-80%" width="360%" height="360%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <clipPath id="portraitClip">
+      <rect x="0" y="0" width="{{width}}" height="980" />
+    </clipPath>
+  </defs>
+
+  <g id="layer-background">
+    <rect width="{{width}}" height="{{height}}" fill="{{design.background}}" />
+    <rect width="{{width}}" height="{{height}}" filter="url(#noise)" opacity="0.6" />
+  </g>
+
+  <!-- Portrait: top 51%, full width, fades downward -->
+  {{#if portraitDataURI}}
+  <g id="layer-portrait">
+    <image href="{{portraitDataURI}}"
+           x="0" y="0" width="{{width}}" height="980"
+           preserveAspectRatio="xMidYMid slice"
+           clip-path="url(#portraitClip)" />
+  </g>
+  {{/if}}
+
+  <g id="layer-title">
+    <text class="outline" x="1040" y="1140"
+          font-family="{{design.font_title}}"
+          font-size="130" fill="#f5f5f5"
+          text-anchor="end">{{tier_1.name_ja}}</text>
+  </g>
+
+  <g id="layer-skill-label">
+    <text x="1040" y="1245"
+          font-family="{{design.font_mono}}"
+          font-size="70" fill="#fc01ff"
+          text-anchor="end">.skill</text>
+  </g>
+
+  <g id="layer-tagline">
+    {{#each taglineLines}}
+    <text x="1040" y="{{add 1360 (mul @index 52)}}"
+          font-family="{{../design.font_body}}"
+          font-size="32" fill="#cccccc"
+          text-anchor="end">{{this}}</text>
+    {{/each}}
+  </g>
+
+  <g id="layer-key-kanji">
+    <image href="assets/illusions-kanji.svg"
+           x="898" y="1762" width="132" height="132"
+           filter="url(#glow)" />
+  </g>
+
+</svg>

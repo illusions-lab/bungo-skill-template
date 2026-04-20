@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Poster large: A1 (7016×9933) base, B1 (8350×11811) scale-up.
+  Tier 1-5 content density (+ full_layers, citations, methodology).
+-->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="{{width}}" height="{{height}}" viewBox="0 0 {{width}} {{height}}">
+  <defs>
+    <filter id="noise" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" />
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 {{design.noise_opacity}} 0" />
+      <feComposite in2="SourceGraphic" operator="in" />
+    </filter>
+  </defs>
+
+  <g id="layer-background">
+    <rect width="{{width}}" height="{{height}}" fill="{{design.background}}" />
+    <rect width="{{width}}" height="{{height}}" filter="url(#noise)" />
+  </g>
+
+  <g id="layer-frame">
+    <rect x="280" y="280" width="{{sub width 560}}" height="{{sub height 560}}"
+          fill="none" stroke="{{design.accent_color}}" stroke-width="8" opacity="0.4" />
+  </g>
+
+  <g id="layer-header">
+    <text x="400" y="480" font-family="{{design.font_mono}}" font-size="78"
+          fill="{{design.accent_color}}" letter-spacing="6">{{author}}/{{id}}</text>
+  </g>
+
+  {{#if portraitDataURI}}
+  <g id="layer-portrait">
+    <image href="{{portraitDataURI}}" x="1500" y="800" width="4000" height="4900"
+           preserveAspectRatio="xMidYMid slice" />
+    <rect x="1500" y="800" width="4000" height="4900" fill="none"
+          stroke="{{design.accent_color}}" stroke-width="14" opacity="0.6" />
+  </g>
+  {{/if}}
+
+  <g id="layer-title">
+    <text class="outline" x="{{div width 2}}" y="6080" font-family="{{design.font_title}}"
+          font-size="640" fill="#f5f5f5" text-anchor="middle">{{tier_1.name_ja}}</text>
+  </g>
+
+  <g id="layer-romaji">
+    <text x="{{div width 2}}" y="6280" font-family="{{design.font_mono}}"
+          font-size="140" fill="{{design.accent_color}}" letter-spacing="20" text-anchor="middle">{{tier_1.name_romaji}}</text>
+  </g>
+
+  <g id="layer-divider">
+    <line x1="2400" y1="6420" x2="4616" y2="6420" stroke="{{design.accent_color}}" stroke-width="7" opacity="0.6" />
+  </g>
+
+  <g id="layer-tagline">
+    <text x="{{div width 2}}" y="6620" font-family="{{design.font_body}}"
+          font-size="120" fill="#dddddd" text-anchor="middle">{{tier_1.tagline}}</text>
+  </g>
+
+  {{#if tier_4.philosophy}}
+  <g id="layer-philosophy">
+    <rect x="700" y="6900" width="{{sub width 1400}}" height="700" rx="28"
+          fill="#1a1a1a" stroke="{{design.accent_color}}" stroke-width="4" opacity="0.85" />
+    <text x="760" y="7020" font-family="{{design.font_mono}}" font-size="52"
+          fill="{{design.accent_color}}" letter-spacing="4">// philosophy</text>
+    {{#each wrappedPhilosophy}}
+    <text x="760" y="{{add 7120 (mul @index 100)}}" font-family="{{../design.font_body}}"
+          font-size="68" fill="#cccccc">{{this}}</text>
+    {{/each}}
+  </g>
+  {{/if}}
+
+  {{#if tier_4.layer_summary}}
+  <g id="layer-summary">
+    {{#each tier_4.layer_summary}}
+    <g transform="translate({{add 700 (mul @index 1110)}}, 7780)">
+      <rect width="1010" height="380" rx="20" fill="#0d0d0d"
+            stroke="{{../design.accent_color}}" stroke-width="4" opacity="0.85" />
+      <text x="505" y="140" font-family="{{../design.font_mono}}" font-size="68"
+            fill="{{../design.accent_color}}" text-anchor="middle">{{id}}</text>
+      <text class="outline" x="505" y="270" font-family="{{../design.font_title}}" font-size="180"
+            fill="#f5f5f5" text-anchor="middle">{{label}}</text>
+      <text x="505" y="340" font-family="{{../design.font_body}}" font-size="48"
+            fill="#888888" text-anchor="middle">{{name}}</text>
+    </g>
+    {{/each}}
+  </g>
+  {{/if}}
+
+  {{#if tier_5.citations}}
+  <g id="layer-citations">
+    <rect x="700" y="8260" width="{{sub width 1400}}" height="900" rx="28"
+          fill="#0d0d0d" stroke="{{design.accent_color}}" stroke-width="4" opacity="0.85" />
+    <text x="760" y="8380" font-family="{{design.font_mono}}" font-size="52"
+          fill="{{design.accent_color}}" letter-spacing="4">// citations</text>
+    {{#each wrappedCitations}}
+    <text x="760" y="{{add 8480 (mul @index 80)}}" font-family="{{../design.font_body}}"
+          font-size="48" fill="#aaaaaa">{{this}}</text>
+    {{/each}}
+  </g>
+  {{/if}}
+
+  {{#if tier_5.methodology}}
+  <g id="layer-methodology">
+    <text x="760" y="9300" font-family="{{design.font_mono}}" font-size="44"
+          fill="#666666" letter-spacing="3">// methodology</text>
+    {{#each wrappedMethodology}}
+    <text x="760" y="{{add 9360 (mul @index 60)}}" font-family="{{../design.font_mono}}"
+          font-size="36" fill="#888888">{{this}}</text>
+    {{/each}}
+  </g>
+  {{/if}}
+
+  <g id="layer-footer">
+    <text x="{{sub width 400}}" y="{{sub height 360}}" font-family="{{design.font_mono}}" font-size="60"
+          fill="#666666" text-anchor="end">{{repo}}</text>
+  </g>
+</svg>

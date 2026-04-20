@@ -1,0 +1,36 @@
+{
+  "name": "skill-generator",
+  "version": "0.1.0",
+  "private": true,
+  "description": "illusions-skill 用画像・Webアセット自動生成パイプライン",
+  "type": "module",
+  "bin": {
+    "skill-generator": "./bin/skill-generator.js"
+  },
+  "scripts": {
+    "generate": "node bin/skill-generator.js generate",
+    "generate:og": "node bin/skill-generator.js generate --only=og",
+    "generate:social": "node bin/skill-generator.js generate --only=social",
+    "generate:print": "NODE_OPTIONS='--max-old-space-size=6144' node bin/skill-generator.js generate --only=print",
+    "validate": "node bin/skill-generator.js validate ../illusions-skill.yaml"
+  },
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "ag-psd": "^30.1.1",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "budoux": "^0.8.1",
+    "fontkit": "^2.0.4",
+    "handlebars": "^4.7.8",
+    "js-yaml": "^4.1.0",
+    "markdown-it": "^14.1.0",
+    "opentype.js": "^1.3.4",
+    "pdfkit": "^0.18.0",
+    "pngjs": "^7.0.0",
+    "sharp": "^0.34.5",
+    "svg-to-pdfkit": "^0.1.8"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

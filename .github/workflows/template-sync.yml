@@ -1,0 +1,24 @@
+name: Template Sync
+
+on:
+  schedule:
+    - cron: "0 3 * * 1"
+  workflow_dispatch:
+
+jobs:
+  repo-sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: AndreasAugustin/actions-template-sync@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_repo_path: illusions-lab/bungo-skill-template
+          upstream_branch: main
+          pr_title: "chore: sync from template (bungo-skill-template)"
+          pr_labels: "template-sync"
