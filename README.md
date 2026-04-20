@@ -1,6 +1,6 @@
 <div align="center">
 
-![og](docs/repository-open-graph.png)
+![og](https://illusions-lab.github.io/bungo-skill-template/repository-open-graph.png)
 
 
 # [作家名].skill
@@ -285,8 +285,8 @@ git push -u origin main
 
 | 出力 | 形式 | 配信先 |
 |---|---|---|
-| `dist/og.png` | PNG | Pages デプロイで `docs/repository-open-graph.png` にコピー → README / Web OGP で表示 |
-| Social Media (1200×630, 1080², 1080×1920) | PNG | `dist/social/` |
+| `dist/og.png` (1280×640) | PNG | Pages デプロイで `docs/repository-open-graph.png` にコピー → README / Web OGP で表示 |
+| `dist/social-{card,square,story}.png` | PNG | Actions artifact としてアップロード |
 | 印刷ポスター A4〜B1 | PNG + PDF | GitHub Releases に ZIP 添付 |
 | Webホームページ | static HTML | `docs/` → GitHub Pages |
 

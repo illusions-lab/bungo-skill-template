@@ -33,12 +33,15 @@ node_modules/
 dist/
 
 # ─── Web ビルド出力 ───────────────────────
-# docs/ は GitHub Pages の配信元。docs/fonts/ は手動管理、それ以外は再生成。
+# docs/ は GitHub Pages の配信元。docs/fonts/ はライセンス同梱のため手動管理、
+# それ以外のビルド成果物は Actions が再生成する。
 docs/index.html
 docs/assets/
 docs/.vite/
 docs/.vite-ssg-temp/
 docs/repository-open-graph.png
+docs/favicon.svg
+docs/portrait.jpg
 
 # ─── 作品集（著作権配慮、ユーザー持込）──
 sources/**
