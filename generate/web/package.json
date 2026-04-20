@@ -1,0 +1,26 @@
+{
+  "name": "skill-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "clean": "rm -rf ../docs/assets ../docs/.vite ../docs/index.html",
+    "build": "npm run clean && vite-ssg build",
+    "preview": "vite preview",
+    "type-check": "vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "vue": "^3.5.32",
+    "vue-router": "^4.4.5"
+  },
+  "devDependencies": {
+    "@rollup/plugin-yaml": "^4.1.2",
+    "@types/node": "^20.16.5",
+    "@vitejs/plugin-vue": "^5.1.4",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.8",
+    "vite-ssg": "^28.3.0",
+    "vue-tsc": "^2.1.6"
+  }
+}

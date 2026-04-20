@@ -1,0 +1,36 @@
+@font-face {
+  font-family: 'Zen Antique';
+  src: url('/fonts/Zen_Antique/ZenAntique-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Fira Code';
+  src: url('/fonts/Fira_Code/static/FiraCode-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Fira Code';
+  src: url('/fonts/Fira_Code/static/FiraCode-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #0d0d0d;
+  color: #e5e5e5;
+  font-family: 'Zen Antique', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: inherit; }
+
+::selection {
+  background: var(--accent, #6B7280);
+  color: #000;
+}

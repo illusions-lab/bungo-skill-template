@@ -31,7 +31,7 @@ tier_3:
   key_features:
     - 14層×5系統の文体DNA
     - 3つの動作モード
-    - 統計データ + 人手考証
+    - 統計データに基づく分析
 
 tier_4:
   philosophy_ref: sources/content/philosophy.md

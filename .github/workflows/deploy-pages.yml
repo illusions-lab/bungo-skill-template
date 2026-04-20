@@ -1,7 +1,7 @@
 name: Deploy Web to Pages
 
-# 各 skill repo は web/ source を持たない。
-# このワークフローが illusions-lab/bungo-skill-template から web/ を fetch して
+# generate/web/ は bungo-skill-template に置かれた LP ソース。
+# このワークフローが WEB_SOURCE で指定されたリポから generate/web/ を fetch して
 # build → docs/ → GitHub Pages に配信する。
 
 on:
@@ -60,27 +60,28 @@ jobs:
           REF="${WEB_SOURCE##*@}"
           echo "Cloning $REPO @ $REF for web source"
           git clone --depth 1 --branch "$REF" "https://github.com/${REPO}.git" /tmp/web-source
-          if [ ! -d /tmp/web-source/web ]; then
-            echo "::error::web/ directory not found in $REPO@$REF"
+          if [ ! -d /tmp/web-source/generate/web ]; then
+            echo "::error::generate/web/ directory not found in $REPO@$REF"
             exit 1
           fi
-          cp -r /tmp/web-source/web ./web
+          mkdir -p ./generate
+          cp -r /tmp/web-source/generate/web ./generate/web
 
       - uses: actions/setup-node@v4
         if: steps.check.outputs.skip != 'true'
         with:
-          node-version-file: 'web/.nvmrc'
+          node-version-file: 'generate/web/.nvmrc'
           cache: 'npm'
-          cache-dependency-path: 'web/package-lock.json'
+          cache-dependency-path: 'generate/web/package-lock.json'
 
       - name: Install web dependencies
         if: steps.check.outputs.skip != 'true'
-        working-directory: web
+        working-directory: generate/web
         run: npm ci || npm install
 
       - name: Build static site
         if: steps.check.outputs.skip != 'true'
-        working-directory: web
+        working-directory: generate/web
         run: npm run build
 
       - name: Copy OG image to docs

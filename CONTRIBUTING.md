@@ -26,12 +26,12 @@ npm run generate -- --only=og        # OG だけ生成
 npm run generate                     # 全部生成
 ```
 
-Web プレビューは別リポジトリの web/ を使う:
+Web プレビューは別リポジトリの generate/web/ を使う:
 
 ```bash
-# Web は別リポ illusions-lab/skill-web で管理（このリポには含まれない）
-git clone https://github.com/illusions-lab/skill-web /tmp/skill-web
-cd /tmp/skill-web/web
+# generate/web は別リポ illusions-lab/bungo-skill-template で管理（このリポには含まれない）
+git clone https://github.com/illusions-lab/bungo-skill-template /tmp/skill-template
+cd /tmp/skill-template/generate/web
 npm install
 SKILL_REPO=/path/to/your-skill npm run dev   # localhost:5173
 ```
@@ -50,13 +50,14 @@ your-skill/
 │       ├── philosophy.md         ← 大判ポスター用、任意
 │       ├── sample.md             ← 任意
 │       └── citations.md          ← 任意
-├── generate/                     ← ツール本体（カスタムフォントを足す場合のみ触る）
+├── generate/                     ← 宣伝用素材生成ツール一式
+│   ├── web/                      ← GitHub Pages 用 Vite ソース（CI が fetch、git 管理外）
 │   └── assets/fonts/             ← カスタムフォント追加先（Zen Antique・Fira Code 同梱）
 │       └── My_Font/My-Font-Regular.ttf
 └── docs/                         ← Vite ビルド出力（CI が自動生成、git 管理外）
 
-# web/ はこのリポには存在しません。
-# 別リポ illusions-lab/skill-web に置かれており、CI が deploy-pages.yml で fetch します。
+# generate/web/ はこのリポには存在しません。
+# 別リポ illusions-lab/bungo-skill-template に置かれており、CI が deploy-pages.yml で fetch します。
 ```
 
 ## デザインに関する重要な注意

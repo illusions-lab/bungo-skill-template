@@ -28,11 +28,6 @@ node_modules/
 .vite/
 .vite-ssg-temp/
 
-# ─── Web ソース（git 管理しない） ─────────
-# web/ は GitHub Actions で実行され docs/ → GitHub Pages に配信されるだけ。
-# 各 skill repo は web/ source を持たない。deploy-pages.yml が upstream から取得する。
-# ローカルで web プレビューしたい場合のみ web/ を持っても OK（git には入らない）。
-web/
 
 # ─── Generator 出力（画像、印刷物 — 生成物のみ）──
 dist/
