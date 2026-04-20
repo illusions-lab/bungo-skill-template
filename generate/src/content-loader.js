@@ -7,6 +7,8 @@ import { fileURLToPath } from 'node:url'
 import yaml from 'js-yaml'
 import { Resvg } from '@resvg/resvg-js'
 import { DEFAULT_DESIGN, DEFAULT_OUTPUT } from './config.js'
+import { resolveFontPath } from './font-resolver.js'
+import { loadOpentypeFont } from './text/font-cache.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const PLACEHOLDER_PORTRAIT = path.resolve(__dirname, '../assets/placeholder-portrait.jpg')
@@ -22,11 +24,12 @@ export function loadSkillMeta(yamlPath) {
 }
 
 export function resolveContent(meta, repoRoot) {
+  const design = { ...DEFAULT_DESIGN, ...(meta.design ?? {}) }
   // *_ref フィールドのファイルを読み込み
   // tier が YAML に無いケースは null を返す（degradation contract）
   return {
     ...meta,
-    design: { ...DEFAULT_DESIGN, ...(meta.design ?? {}) },
+    design,
     output: { ...DEFAULT_OUTPUT, ...(meta.output ?? {}) },
     tier_4: meta.tier_4
       ? {
@@ -43,7 +46,12 @@ export function resolveContent(meta, repoRoot) {
         }
       : null,
     portrait: resolvePortrait(meta.tier_1?.portrait, repoRoot),
-    ...loadKanjiDataURIs(KANJI_SVG),
+    ...loadKanjiDataURIs({
+      keyKanji: meta.tier_1?.key_kanji,
+      fontFamily: design.font_title,
+      accentColor: design.accent_color,
+      fallbackSvgPath: KANJI_SVG,
+    }),
   }
 }
 
@@ -84,9 +92,28 @@ function resolvePortrait(relPath, repoRoot) {
   return null
 }
 
-function loadKanjiDataURIs(svgPath) {
-  if (!fs.existsSync(svgPath)) return { kanjiDataURI: null, kanjiGlowDataURI: null }
-  const svgRaw = fs.readFileSync(svgPath, 'utf-8')
+function loadKanjiDataURIs({ keyKanji, fontFamily, accentColor, fallbackSvgPath }) {
+  // ロゴSVG (generate/assets/illusions-kanji.svg) を最優先で使う
+  if (fs.existsSync(fallbackSvgPath)) {
+    return renderKanjiDataURIs(fs.readFileSync(fallbackSvgPath, 'utf-8'))
+  }
+
+  // ロゴSVGが無い場合のみフォントから生成（skill派生リポ用フォールバック）
+  const char = typeof keyKanji === 'string' ? Array.from(keyKanji.trim())[0] : null
+  if (char) {
+    try {
+      const font = loadOpentypeFont(resolveFontPath(fontFamily ?? DEFAULT_DESIGN.font_title))
+      return renderKanjiDataURIs(buildKanjiSvg(char, font, accentColor ?? '#f5f5f5'))
+    } catch (e) {
+      console.warn(`[KANJI FALLBACK] could not render "${char}": ${e.message}`)
+    }
+  }
+
+  return { kanjiDataURI: null, kanjiGlowDataURI: null }
+}
+
+function renderKanjiDataURIs(svgRaw) {
+  if (!svgRaw) return { kanjiDataURI: null, kanjiGlowDataURI: null }
 
   // クリスプ版（透明背景・512×512）
   const crisp = new Resvg(svgRaw, { fitTo: { mode: 'width', value: 512 } })
@@ -107,6 +134,27 @@ function loadKanjiDataURIs(svgPath) {
   const kanjiGlowDataURI = `data:image/png;base64,${comp.render().asPng().toString('base64')}`
 
   return { kanjiDataURI, kanjiGlowDataURI }
+}
+
+function buildKanjiSvg(char, font, fill) {
+  // renderKanjiDataURIs は 512×512 viewBox を前提（illusions-kanji.svg と同一形式）
+  const baseSize = 400
+  const initial = font.getPath(char, 0, 0, baseSize)
+  const bbox = initial.getBoundingBox()
+  const glyphWidth = Math.max(bbox.x2 - bbox.x1, 1)
+  const glyphHeight = Math.max(bbox.y2 - bbox.y1, 1)
+  const targetGlyphSize = 380  // 512 viewBoxに対して余白16px程度
+  const scale = Math.min(targetGlyphSize / glyphWidth, targetGlyphSize / glyphHeight)
+  const scaledPath = font.getPath(char, 0, 0, baseSize * scale)
+  const scaledBox = scaledPath.getBoundingBox()
+  const centerX = (scaledBox.x1 + scaledBox.x2) / 2
+  const centerY = (scaledBox.y1 + scaledBox.y2) / 2
+  const tx = 256 - centerX
+  const ty = 256 - centerY
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+    <path d="${scaledPath.toPathData(2)}" transform="translate(${tx} ${ty})" fill="${fill}" />
+  </svg>`
 }
 
 export function getTier(meta, n) {
