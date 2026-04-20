@@ -4,6 +4,7 @@ import Hero from './components/Hero.vue'
 import ModesSection from './components/ModesSection.vue'
 import InstallBlock from './components/InstallBlock.vue'
 import FeaturesGrid from './components/FeaturesGrid.vue'
+import ReadmeBody from './components/ReadmeBody.vue'
 import Footer from './components/Footer.vue'
 
 const meta = useSkillMeta()
@@ -24,6 +25,7 @@ const meta = useSkillMeta()
     <ModesSection v-if="meta.tier_3?.modes" :modes="meta.tier_3.modes" />
     <InstallBlock v-if="meta.tier_2?.install_command" :command="meta.tier_2.install_command" />
     <FeaturesGrid v-if="meta.tier_3?.key_features" :features="meta.tier_3.key_features" />
+    <ReadmeBody />
     <Footer :meta="meta" />
   </main>
 </template>

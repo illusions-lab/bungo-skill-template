@@ -21,7 +21,7 @@ tier_1:
 tier_2:
   description: 文豪 skill を新規作成するための雛形。
   badges: [テンプレート, 14層DNA, MIT]
-  install_command: "skills install illusions-lab/bungo-skill-template"
+  install_command: "npx skills install illusions-lab/bungo-skill-template"
 
 tier_3:
   modes:
