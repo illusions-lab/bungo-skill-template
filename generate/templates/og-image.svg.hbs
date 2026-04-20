@@ -12,14 +12,6 @@
       <stop offset="40%" stop-color="{{design.background}}" stop-opacity="0" />
       <stop offset="100%" stop-color="{{design.background}}" stop-opacity="1" />
     </linearGradient>
-    <filter id="glow" x="-80%" y="-80%" width="360%" height="360%">
-      <feGaussianBlur stdDeviation="4" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
     <clipPath id="portraitClip">
       <rect x="0" y="0" width="448" height="{{height}}" />
     </clipPath>
@@ -68,11 +60,10 @@
     {{/each}}
   </g>
 
-  <!-- illusions kanji: decorative bottom-right -->
+  <!-- illusions kanji: decorative bottom-right (glow + crisp baked into one PNG) -->
   <g id="layer-key-kanji">
-    <image href="assets/illusions-kanji.svg"
-           x="1090" y="510" width="130" height="130"
-           filter="url(#glow)" />
+    <image href="{{kanjiGlowDataURI}}"
+           x="895" y="315" width="520" height="520" />
   </g>
 
 </svg>

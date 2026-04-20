@@ -111,6 +111,8 @@ function buildContext(meta, assetSpec, repoRoot, fontResolver) {
     width: assetSpec.width,
     height: assetSpec.height,
     portraitDataURI: meta.portrait?.dataURI ?? null,
+    kanjiDataURI: meta.kanjiDataURI ?? null,
+    kanjiGlowDataURI: meta.kanjiGlowDataURI ?? null,
     taglineLines,
     wrappedPhilosophy,
     wrappedSample,
@@ -177,12 +179,6 @@ async function generateAsset(assetId, assetSpec, meta, repoRoot, fonts) {
       outputs.png = pngPath
       console.log(`  ✓ ${path.relative(repoRoot, pngPath)}`)
 
-      // OG は GitHub の自動 OG 機能のため repo root にもコピー
-      if (isOg) {
-        const rootOgPath = path.resolve(repoRoot, 'repository-open-graph.png')
-        fs.copyFileSync(pngPath, rootOgPath)
-        console.log(`  ✓ ${path.relative(repoRoot, rootOgPath)} (GitHub OG)`)
-      }
 
       if (formats.includes('jpg')) {
         const jpgPath = outputPath('jpg')

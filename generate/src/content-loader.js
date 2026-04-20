@@ -5,10 +5,12 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import yaml from 'js-yaml'
+import { Resvg } from '@resvg/resvg-js'
 import { DEFAULT_DESIGN, DEFAULT_OUTPUT } from './config.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const PLACEHOLDER_PORTRAIT = path.resolve(__dirname, '../assets/placeholder-portrait.jpg')
+const KANJI_SVG = path.resolve(__dirname, '../assets/illusions-kanji.svg')
 
 export function loadSkillMeta(yamlPath) {
   const raw = fs.readFileSync(yamlPath, 'utf-8')
@@ -41,6 +43,7 @@ export function resolveContent(meta, repoRoot) {
         }
       : null,
     portrait: resolvePortrait(meta.tier_1?.portrait, repoRoot),
+    ...loadKanjiDataURIs(KANJI_SVG),
   }
 }
 
@@ -79,6 +82,31 @@ function resolvePortrait(relPath, repoRoot) {
     return { dataURI: `data:${mime};base64,${buf.toString('base64')}` }
   }
   return null
+}
+
+function loadKanjiDataURIs(svgPath) {
+  if (!fs.existsSync(svgPath)) return { kanjiDataURI: null, kanjiGlowDataURI: null }
+  const svgRaw = fs.readFileSync(svgPath, 'utf-8')
+
+  // クリスプ版（透明背景・512×512）
+  const crisp = new Resvg(svgRaw, { fitTo: { mode: 'width', value: 512 } })
+  const kanjiDataURI = `data:image/png;base64,${crisp.render().asPng().toString('base64')}`
+
+  // グロー + クリスプをベイクした1024×1024 PNG（kanjiは中央の512×512領域）
+  const innerMatch = svgRaw.match(/<svg[^>]*>([\s\S]*)<\/svg>/)
+  const inner = innerMatch ? innerMatch[1] : ''
+  const composite = `<svg xmlns="http://www.w3.org/2000/svg" width="2048" height="2048" viewBox="0 0 2048 2048">
+    <defs><filter id="_blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="45"/></filter></defs>
+    <g transform="translate(768,768)">
+      <g filter="url(#_blur)" opacity="0.9">${inner}</g>
+      <g filter="url(#_blur)" opacity="0.6">${inner}</g>
+      ${inner}
+    </g>
+  </svg>`
+  const comp = new Resvg(composite, { fitTo: { mode: 'width', value: 1024 } })
+  const kanjiGlowDataURI = `data:image/png;base64,${comp.render().asPng().toString('base64')}`
+
+  return { kanjiDataURI, kanjiGlowDataURI }
 }
 
 export function getTier(meta, n) {
