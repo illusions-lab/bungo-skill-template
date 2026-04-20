@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://illusions-lab.github.io/schemas/illusions-skill.schema.json",
+  "title": "illusions-skill",
+  "description": "illusions skill marketplace metadata + asset generation config",
+  "type": "object",
+  "required": ["schema_version", "id", "name", "tier_1"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "enum": ["1"],
+      "description": "スキーマバージョン。将来の breaking change 検知用。"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$",
+      "description": "スキル一意識別子（例: dazai-skill）"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "表示名（例: 太宰治.skill）"
+    },
+    "category": { "type": "string" },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "license": { "type": "string" },
+    "author": { "type": "string" },
+    "repo": { "type": "string", "format": "uri" },
+    "homepage": { "type": "string", "format": "uri" },
+
+    "tier_1": {
+      "type": "object",
+      "required": ["name_ja", "name_romaji", "tagline"],
+      "additionalProperties": false,
+      "properties": {
+        "name_ja": { "type": "string", "minLength": 1 },
+        "name_romaji": { "type": "string", "minLength": 1 },
+        "tagline": { "type": "string", "minLength": 1 },
+        "portrait": { "type": "string", "description": "肖像画への相対パス（任意、欠落時はプレースホルダー）" },
+        "key_kanji": { "type": "string", "description": "OG画像右下の装飾漢字（任意）" }
+      }
+    },
+
+    "tier_2": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": { "type": "string" },
+        "badges": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "install_command": { "type": "string" }
+      }
+    },
+
+    "tier_3": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "modes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["icon", "name", "desc"],
+            "additionalProperties": false,
+            "properties": {
+              "icon": { "type": "string" },
+              "name": { "type": "string" },
+              "desc": { "type": "string" }
+            }
+          }
+        },
+        "key_features": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "tier_4": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "philosophy_ref": { "type": "string" },
+        "sample_output_ref": { "type": "string" },
+        "layer_summary": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "label", "name"],
+            "additionalProperties": false,
+            "properties": {
+              "id": { "type": "string" },
+              "label": { "type": "string" },
+              "name": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+
+    "tier_5": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "full_layers_ref": { "type": "string" },
+        "citations_ref": { "type": "string" },
+        "methodology": { "type": "string" }
+      }
+    },
+
+    "design": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "accent_color": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+        "background": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+        "noise_opacity": { "type": "number", "minimum": 0, "maximum": 1 },
+        "font_title": { "type": "string" },
+        "font_mono": { "type": "string" },
+        "font_body": { "type": "string" }
+      }
+    },
+
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "jpg_quality": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "pdf_color_space": { "type": "string", "enum": ["rgb", "cmyk"] },
+        "large_format": { "type": "string", "enum": ["psd", "psb"] }
+      }
+    }
+  }
+}

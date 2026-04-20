@@ -1,0 +1,67 @@
+schema_version: "1"
+
+# === Marketplace fields ===
+id: bungo-skill-template
+name: 文豪.skill.template
+category: bungo
+tags: [japanese, literary, template]
+license: MIT
+author: illusions-lab
+repo: https://github.com/illusions-lab/bungo-skill-template
+homepage: https://illusions-lab.github.io/bungo-skill-template
+
+# === Content tiers (cumulative; 上位 tier 欠落時は対応 asset を skip+warning) ===
+tier_1:
+  name_ja: 文豪
+  name_romaji: Bungo
+  tagline: 作家の文体DNAを、14層へと蒸留するためのテンプレート。
+  portrait: sources/portrait.jpg
+  key_kanji: 幻
+
+tier_2:
+  description: 文豪 skill を新規作成するための雛形。
+  badges: [テンプレート, 14層DNA, MIT]
+  install_command: "skills install illusions-lab/bungo-skill-template"
+
+tier_3:
+  modes:
+    - { icon: writing, name: 執筆, desc: 作家の声で新規生成 }
+    - { icon: editing, name: 添削, desc: 原稿を作家調に }
+    - { icon: dialogue, name: 対話, desc: 作家の人格で相談 }
+  key_features:
+    - 14層×5系統の文体DNA
+    - 3つの動作モード
+    - 統計データ + 人手考証
+
+tier_4:
+  philosophy_ref: sources/content/philosophy.md
+  sample_output_ref: sources/content/sample.md
+  layer_summary:
+    - { id: L1-L3, label: 聲, name: 音 }
+    - { id: L4-L6, label: 眼, name: 視点 }
+    - { id: L7-L9, label: 骨, name: 構造 }
+    - { id: L10-L12, label: 魂, name: 意味 }
+    - { id: L13-L14, label: 界, name: 限界 }
+
+tier_5:
+  full_layers_ref: SKILL.md
+  citations_ref: sources/content/citations.md
+  methodology: |
+    Stylometry: 形態素解析 + 統計
+    Corpus: 青空文庫 全作品
+    Layers: 14層 × 5カテゴリ
+
+# === Visual design tokens ===
+design:
+  accent_color: "#6B7280"
+  background: "#0d0d0d"
+  noise_opacity: 0.04
+  font_title: "Zen Antique"
+  font_mono: "Fira Code"
+  font_body: "Zen Antique"
+
+# === Output format overrides (省略時は config.js のデフォルト) ===
+output:
+  jpg_quality: 90
+  pdf_color_space: rgb
+  large_format: psb
