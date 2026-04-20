@@ -37,11 +37,11 @@ jobs:
         run: node bin/skill-generator.js generate --only=og ../illusions-skill.yaml
 
       - name: Verify OG output exists
-        run: test -f repository-open-graph.png
+        run: test -f dist/og.png
 
       - name: Sanity check OG file size
         run: |
-          SIZE=$(stat -c%s repository-open-graph.png 2>/dev/null || stat -f%z repository-open-graph.png)
+          SIZE=$(stat -c%s dist/og.png 2>/dev/null || stat -f%z dist/og.png)
           echo "OG size: $SIZE bytes"
           if [ "$SIZE" -lt 1000 ]; then
             echo "::error::OG image suspiciously small (<1KB)"

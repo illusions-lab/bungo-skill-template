@@ -1,6 +1,6 @@
 <div align="center">
 
-![og](/repository-open-graph.png)
+![og](docs/repository-open-graph.png)
 
 
 # [作家名].skill
@@ -278,14 +278,14 @@ git push -u origin main
 編集するのは原則 3 つだけ：
 
 1. **`illusions-skill.yaml`** — メタデータ（名前、説明、デザイン、Tier 別コンテンツ）
-2. **`README.md`** — Web ホームページの本文として使われる
+2. **`README.md`** — GitHub ショーケース兼手引き
 3. **`sources/portrait.jpg`** — 作家の肖像画
 
 これだけで GitHub Actions が以下を自動生成する：
 
 | 出力 | 形式 | 配信先 |
 |---|---|---|
-| `repository-open-graph.png` | PNG | リポ root にコミット → README で表示 |
+| `dist/og.png` | PNG | Pages デプロイで `docs/repository-open-graph.png` にコピー → README / Web OGP で表示 |
 | Social Media (1200×630, 1080², 1080×1920) | PNG | `dist/social/` |
 | 印刷ポスター A4〜B1 | PNG + PDF | GitHub Releases に ZIP 添付 |
 | Webホームページ | static HTML | `docs/` → GitHub Pages |
@@ -314,8 +314,7 @@ NODE_OPTIONS='--max-old-space-size=6144' \
   node bin/skill-generator.js generate --only=print             # 印刷物（数分）
 node bin/skill-generator.js generate                            # 全部
 
-# Web は別リポ illusions-lab/skill-web で管理されており、
-# このリポには含まれない。CI が自動 fetch して build する。
+# Web LP もこのリポの generate/web/ に同梱されている。
 # ローカルプレビュー手順は CONTRIBUTING.md 参照。
 ```
 
@@ -324,13 +323,13 @@ node bin/skill-generator.js generate                            # 全部
 | Workflow | Trigger | 何をする |
 |---|---|---|
 | `validate-skill.yml` | PR | YAML スキーマ検証 + OG smoke test |
-| `generate-assets.yml` | push | OG/SNS 画像生成 → 自動コミット |
-| `deploy-pages.yml` | push / generate-assets 完了後 | web source を upstream から clone → Vite ビルド → GitHub Pages 配信 |
+| `generate-assets.yml` | push | OG/SNS 画像生成 → Actions artifact にアップロード |
+| `deploy-pages.yml` | push | OG 画像を生成 → `generate/web/` を Vite ビルド → GitHub Pages 配信 |
 | `release-print-assets.yml` | release published | 印刷物 6 サイズ全形式生成 → Release に ZIP 添付 |
 
 **初期セットアップ**:
 1. GitHub Pages を有効化: Settings → Pages → Source: **GitHub Actions**
-2. Web source を設定: Settings → Variables → `WEB_SOURCE=illusions-lab/skill-web@main`
+2. 必要な場合のみ外部 Web source を設定: Settings → Variables → `WEB_SOURCE=owner/repo@ref`
 
 ### カスタムフォント
 

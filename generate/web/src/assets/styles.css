@@ -21,11 +21,17 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: #0d0d0d;
+  background: var(--background, #0d0d0d);
   color: #e5e5e5;
   font-family: 'Zen Antique', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#app,
+.app {
+  min-height: 100vh;
+  background: var(--background, #0d0d0d);
 }
 
 a { color: inherit; }
