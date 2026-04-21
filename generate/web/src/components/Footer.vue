@@ -58,4 +58,15 @@ defineProps<{ meta: SkillMeta }>()
 }
 .footer__links a { color: var(--accent); text-decoration: none; }
 .footer__links a:hover { text-decoration: underline; }
+
+@media (max-width: 768px) {
+  .footer { padding: 40px 20px 60px; }
+  .footer__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .footer__name { font-size: 20px; }
+  .footer__links { gap: 16px; font-size: 13px; }
+}
 </style>
