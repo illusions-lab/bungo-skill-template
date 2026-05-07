@@ -65,7 +65,7 @@ const taglineLines = computed(() => {
 .hero__portrait {
   margin: 0;
   background-size: cover;
-  background-position: center top;
+  background-position: center;
   background-repeat: no-repeat;
   background-color: #141414;
 }
