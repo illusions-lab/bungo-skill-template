@@ -347,3 +347,12 @@ InDesign Server（年額数十万円）が必要で CI で動かないため、�
 を出力する。InDesign で使いたい場合は PDF をリンク配置してください。
 
 
+
+<div align="right">
+  <a href="https://www.art.nihon-u.ac.jp/education/department/literature/">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/illusions-lab/.github/refs/heads/main/images/NUArt_colored.svg">
+      <img src="https://raw.githubusercontent.com/illusions-lab/.github/refs/heads/main/images/NUArt.svg" height="64" alt="日本大学芸術学部">
+    </picture>
+  </a>
+</div>
